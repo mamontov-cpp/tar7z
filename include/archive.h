@@ -42,7 +42,7 @@ public:
         \param[in] name name of file
      */
     void remove(const std::string& name);
-    /*! A table of contents in archive
+    /*! A byte contents of archive
      */
     std::vector<char> Contents;
     /*! A list of entries
