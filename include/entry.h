@@ -8,6 +8,8 @@
 namespace tar7z
 {
 
+class Archive;
+
 class Entry
 {
 public:
@@ -26,17 +28,31 @@ public:
     /*! A byte offet for entry
      */
     int Offset;
+    /*! A parent archive
+     */
+    tar7z::Archive* Parent;
+    /*! Whether entry has long name link, due it's name
+     */
+    bool HasLongNameLink;
+
     /*! Constructs default entry
      */
-    inline Entry()
+    inline Entry() : Parent(NULL), HasLongNameLink(false)
     {
 
     }
-
-    inline Entry(const std::string& name, int offset = 0) : Name(name), Mode(0644), Time(0), Type('0'), Offset(offset)
+    /*! Constructs new entry, given name and offset
+        \param[in] name a name
+        \param[in] offset an offset
+     */
+    inline Entry(const std::string& name, int offset = 0) : Name(name), Mode(0644), Time(0),  Offset(offset), Parent(NULL), HasLongNameLink(false)
     {
 
     }
+    /*! Returns contents for entry
+        \return contents
+     */
+    char* contents() const;
 };
 
 }
