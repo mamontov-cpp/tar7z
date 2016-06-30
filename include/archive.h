@@ -3,6 +3,7 @@
     Defines a main archive list
  */
 #pragma once
+#include "error.h"
 #include "entry.h"
 #include <vector>
 #include <utility>
