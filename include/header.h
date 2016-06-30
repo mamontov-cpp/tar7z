@@ -16,9 +16,43 @@ namespace tar7z
 /*! Maximal file name length for header
  */
 #define TAR7Z_MAXLEN (100)
+/*! A total header size for file
+ */
+#define TAR7Z_TOTAL_HEADER_SIZE (512)
+/*! Default file mode for tar
+ */
+#define TAR7Z_DEFAULT_MODE "100777 "
 /*! A mark for 7z links
  */
 #define TAR7Z_LONGLINKNAME ("././@LongLink")
+/*! Default UID and GID (like 7z stores tjhem)
+ */
+#define TAR7Z_DEFAULT_UID_GID "     0 "
+
+/*! A mode offset in header
+ */
+#define TAR7Z_MODE_OFFSET (100)
+/*! A uid offset in header
+ */
+#define TAR7Z_UID_OFFSET (108)
+/*! A uid offset in header
+ */
+#define TAR7Z_UID_OFFSET (108)
+/*! A gid offset in header
+ */
+#define TAR7Z_GID_OFFSET (116)
+/*! A size offset in header
+ */
+#define TAR7Z_SIZE_OFFSET (124)
+/*! A mtime offset in header
+ */
+#define TAR7Z_MTIME_OFFSET (136)
+/*! A checksum offset
+ */
+#define TAR7Z_CHECKSUM_OFFSET (148)
+/*! A type flag offset for checksum
+ */
+#define TAR7Z_TYPEFLAG_OFFSET (156)
 
 /*! We support only pure files in tar or 7z links
  */

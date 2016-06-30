@@ -43,6 +43,18 @@ public:
         \param[in] name name of file
      */
     void remove(const std::string& name);
+
+    /*! Appends header for the entry. The entry must have name of <100 characters
+        \param[out] contents a changed content
+        \param[in] entry an entry to be added
+        \param[in] link whether it's link
+     */
+    static void appendHeader(std::vector<char>& contents, const tar7z::Entry& entry, bool link);
+    /*! Compute header's checksum
+        \param[in] contents content of checksum
+        \return checksum
+     */
+    static unsigned int headerChecksum(const char* contents);
     /*! A byte contents of archive
      */
     std::vector<char> Contents;
@@ -52,6 +64,7 @@ public:
     /*! A mapping between name of file and corresponding entry
      */
     boost::unordered_map<std::string, size_t> NameToEntry;
+
 };
 
 }

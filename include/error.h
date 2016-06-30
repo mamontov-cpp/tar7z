@@ -17,7 +17,8 @@ enum Error
     T7ZE_CANNOT_WRITE_FILE = 3,      //!< Cannot write file
     T7ZE_INVALID_HEADER    = 4,      //!< Invalid header
     T7ZE_INVALID_CHECKSUM  = 5,      //!< Invalid checksum
-    T7ZE_INNER_FILE_UNSUPPORTED = 6  //!< Inner file is unsupported (not a file or link)
+    T7ZE_NO_TRAILING_ZEROES = 6,     //!< No trailing zeroes has been found when reading an archive
+    T7ZE_INNER_FILE_UNSUPPORTED = 7  //!< Inner file is unsupported (not a file or link)
 };
 
 }
