@@ -16,7 +16,7 @@ Due the goal of fast reading, this library will support only:
  * Files
  * Links, that are used in 7-Zip to store long file names (not standard soft/hard links).
 
-On any other cases, reader shoud return tar7z::Error::INNER_FILE_UNSUPPORTED error code. 
+On any other cases, reader shoud return tar7z::Error::T7ZE_INNER_FILE_UNSUPPORTED error code. 
 
 Note, that reader will ignore file mode and creation time, unless TAR7Z_NEED_CREATION_TIME_AND_FILE_MODE specified. 
 
