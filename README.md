@@ -7,7 +7,7 @@ This project is related to [Saddy](https://github.com/mamontov-cpp/saddy-graphic
 
 This reader could be used for asset loading in  your  applications
 
-Also, a writer is provider to make sure, that we could write such archives
+Also, a writer is provided to make sure, that application could write such archives.
 
 ## Limitations
 
