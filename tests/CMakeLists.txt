@@ -21,7 +21,9 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 link_directories("../lib")
 
-add_executable(${TAR7Z_EXECUTABLE_NAME} "main.cpp" ${HDRS})
+set(SRCS "main.cpp" "writer.cpp")
+
+add_executable(${TAR7Z_EXECUTABLE_NAME} ${SRCS} ${HDRS})
 
 target_link_libraries(${TAR7Z_EXECUTABLE_NAME} ${TAR7Z_LINKABLE_NAME})
 

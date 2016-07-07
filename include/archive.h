@@ -5,6 +5,7 @@
 #pragma once
 #include "error.h"
 #include "entry.h"
+#include "header.h"
 #include <vector>
 #include <utility>
 
@@ -45,11 +46,27 @@ public:
     void remove(const std::string& name);
 
     /*! Appends header for the entry. The entry must have name of <100 characters
-        \param[out] contents a changed content
+        \param[in,out] contents a changed content
         \param[in] entry an entry to be added
         \param[in] link whether it's link
      */
     static void appendHeader(std::vector<char>& contents, const tar7z::Entry& entry, bool link);
+    /*! Appends contents with padding
+        \param destination a destination
+        \param begin a beginning
+        \param end an ending of file
+     */
+    template<typename InputIterator>
+    static void appendAndPadContents(std::vector<char>& destination, InputIterator begin, InputIterator end) {
+        size_t size = std::distance(begin, end);
+        destination.insert(destination.end(), begin, end);
+        // Pad content block
+        size_t oddpart = size  % TAR7Z_ALIGNMENT_BLOCK;
+        if (oddpart != 0)
+        {
+            destination.resize(destination.size() + (TAR7Z_ALIGNMENT_BLOCK - oddpart), TAR7Z_FILL_CHARACTER);
+        }
+    }
     /*! Compute header's checksum
         \param[in] contents content of checksum
         \return checksum

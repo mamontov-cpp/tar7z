@@ -19,6 +19,9 @@ namespace tar7z
 /*! A total header size for file
  */
 #define TAR7Z_TOTAL_HEADER_SIZE (512)
+/*! An alignment block for file
+ */
+#define TAR7Z_ALIGNMENT_BLOCK (512)
 /*! Default file mode for tar
  */
 #define TAR7Z_DEFAULT_MODE "100777 "

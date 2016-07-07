@@ -1,8 +1,58 @@
 #include "../include/archive.h"
 #include "header.h"
+#include "entry.h"
 #include <cstring>
 #include <cassert>
 #include <ctime>
+#include <iterator>
+
+
+void tar7z::Archive::add(const std::string& name, const std::vector<char>& contents )
+{
+    if (NameToEntry.find(name) != NameToEntry.end())
+    {
+        remove(name);
+    }
+    tar7z::Entry e;
+    // If name length is greater than 100 - append link element
+    if (name.size() < TAR7Z_MAXLEN)
+    {
+        e.Name = name;
+    }
+    else
+    {
+        // Set entry name as less than 100
+        e.Name = name.substr(0, TAR7Z_MAXLEN - 1);
+
+        // Append link element, which will store actual name of element
+        tar7z::Entry link;
+        link.Name = TAR7Z_LONGLINKNAME;
+#ifdef TAR7Z_NEED_CREATION_TIME_AND_FILE_MODE
+        link.Mode = 0777;
+        link.Time = time(NULL);
+#endif
+        link.Size = name.size();
+        appendHeader(this->Contents, link, true);
+        appendAndPadContents(this->Contents, name.begin(), name.end());
+    }
+
+    // Append actual file
+#ifdef TAR7Z_NEED_CREATION_TIME_AND_FILE_MODE
+    e.Mode = 0777;
+    e.Time = time(NULL);
+#endif
+    e.Size = contents.size();
+    e.Offset = this->Contents.size() + TAR7Z_TOTAL_HEADER_SIZE;
+    appendHeader(this->Contents, e, false);
+    appendAndPadContents(this->Contents, contents.begin(), contents.end());
+
+    // Synchronize entry name with actual name, passed in argument
+    e.Name = name;
+
+    size_t pos = Entries.size();
+    Entries.push_back(e);
+    NameToEntry.insert(std::make_pair(name, pos));
+}
 
 void tar7z::Archive::appendHeader(std::vector<char>& contents, const tar7z::Entry& entry, bool link)
 {
