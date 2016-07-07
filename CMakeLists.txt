@@ -61,4 +61,3 @@ set_target_properties(${TAR7Z_LIBRARY_NAME}
 	RELEASE_POSTFIX "-release"
 )
 
-add_subdirectory("tests")
