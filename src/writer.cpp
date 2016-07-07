@@ -18,7 +18,7 @@ tar7z::Error tar7z::Writer::write(const std::string& filename, const tar7z::Arch
         }
     }
     std::vector<char> pad_bytes;
-    pad_bytes.resize(TAR7Z_TOTAL_HEADER_SIZE * 2, TAR7Z_FILL_CHARACTER); // Two header sizes for file
+    pad_bytes.resize(TAR7Z_ALIGNMENT_BLOCK * 2, TAR7Z_FILL_CHARACTER); // Two header sizes for file
     int result = fwrite(&(pad_bytes[0]), pad_bytes.size(), 1, file);
     if (result != 1)
     {
