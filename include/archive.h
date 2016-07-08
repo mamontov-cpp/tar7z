@@ -33,13 +33,15 @@ public:
     /*! Adds new file to archive
         \param[in] name name of file
         \param[in] contents list of contents
+        \param[in] default_time should we substitute creation time with 0
      */
-    void add(const std::string& name, const std::vector<char>& contents );
+    void add(const std::string& name, const std::vector<char>& contents, bool default_time = false );
     /*! Adds new file to archive
         \param[in] name name of file
         \param[in] contents list of contents
+        \param[in] default_time should we substitute creation time with 0
      */
-    void add(const std::string& name, const std::vector<unsigned char>& contents );
+    void add(const std::string& name, const std::vector<unsigned char>& contents, bool default_time = false);
     /*! Removes a file with specified name from archove
         \param[in] name name of file
      */
@@ -49,8 +51,9 @@ public:
         \param[in,out] contents a changed content
         \param[in] entry an entry to be added
         \param[in] link whether it's link
+        \param[in] default_time whether we should default time with zero
      */
-    static void appendHeader(std::vector<char>& contents, const tar7z::Entry& entry, bool link);
+    static void appendHeader(std::vector<char>& contents, const tar7z::Entry& entry, bool link, bool default_time);
     /*! Appends contents with padding
         \param destination a destination
         \param begin a beginning

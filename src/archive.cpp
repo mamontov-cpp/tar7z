@@ -7,7 +7,7 @@
 #include <iterator>
 
 
-void tar7z::Archive::add(const std::string& name, const std::vector<char>& contents )
+void tar7z::Archive::add(const std::string& name, const std::vector<char>& contents, bool default_time)
 {
     if (NameToEntry.find(name) != NameToEntry.end())
     {
@@ -32,7 +32,7 @@ void tar7z::Archive::add(const std::string& name, const std::vector<char>& conte
         link.Time = time(NULL);
 #endif
         link.Size = name.size();
-        appendHeader(this->Contents, link, true);
+        appendHeader(this->Contents, link, true, default_time);
         appendAndPadContents(this->Contents, name.begin(), name.end());
     }
 
@@ -43,7 +43,7 @@ void tar7z::Archive::add(const std::string& name, const std::vector<char>& conte
 #endif
     e.Size = contents.size();
     e.Offset = this->Contents.size() + TAR7Z_TOTAL_HEADER_SIZE;
-    appendHeader(this->Contents, e, false);
+    appendHeader(this->Contents, e, false, default_time);
     appendAndPadContents(this->Contents, contents.begin(), contents.end());
 
     // Synchronize entry name with actual name, passed in argument
@@ -54,12 +54,12 @@ void tar7z::Archive::add(const std::string& name, const std::vector<char>& conte
     NameToEntry.insert(std::make_pair(name, pos));
 }
 
-void tar7z::Archive::add(const std::string& name, const std::vector<unsigned char>& contents )
+void tar7z::Archive::add(const std::string& name, const std::vector<unsigned char>& contents, bool default_time)
 {
     std::vector<char> c;
     c.resize(contents.size());
     memcpy(&(c[0]), &(contents[0]), contents.size() * sizeof(char));
-    this->add(name, c);
+    this->add(name, c, default_time);
 }
 
 void tar7z::Archive::remove(const std::string &name)
@@ -67,7 +67,7 @@ void tar7z::Archive::remove(const std::string &name)
     // TODO: Do not forget to implement it
 }
 
-void tar7z::Archive::appendHeader(std::vector<char>& contents, const tar7z::Entry& entry, bool link)
+void tar7z::Archive::appendHeader(std::vector<char>& contents, const tar7z::Entry& entry, bool link, bool default_time)
 {
     assert(entry.Name.size() < TAR7Z_MAXLEN);
     contents.resize(contents.size() + TAR7Z_TOTAL_HEADER_SIZE, TAR7Z_FILL_CHARACTER);
@@ -87,11 +87,18 @@ void tar7z::Archive::appendHeader(std::vector<char>& contents, const tar7z::Entr
 #endif
     strcpy(offset + TAR7Z_UID_OFFSET, TAR7Z_DEFAULT_UID_GID);
     strcpy(offset + TAR7Z_GID_OFFSET, TAR7Z_DEFAULT_UID_GID);
+    if (default_time)
+    {
+        sprintf(offset + TAR7Z_MTIME_OFFSET, "%011lo", 0);
+    }
+    else
+    {
 #ifdef TAR7Z_NEED_CREATION_TIME_AND_FILE_MODE
-    sprintf(offset + TAR7Z_MTIME_OFFSET, "%011lo", entry.Time));
+        sprintf(offset + TAR7Z_MTIME_OFFSET, "%011lo", entry.Time);
 #else
-    sprintf(offset + TAR7Z_MTIME_OFFSET, "%011lo", time(NULL));
+        sprintf(offset + TAR7Z_MTIME_OFFSET, "%011lo", time(NULL));
 #endif
+    }
     sprintf(offset + TAR7Z_SIZE_OFFSET, "%011llo", entry.Size);
     if (!link)
     {
