@@ -20,7 +20,8 @@ struct WriterTest : tpunit::TestFixture
    WriterTest() : tpunit::TestFixture(
            TEST(WriterTest::test_empty),
            TEST(WriterTest::test_one_simple_file),
-           TEST(WriterTest::test_four_files_with_short_names)
+           TEST(WriterTest::test_four_files_with_short_names),
+           TEST(WriterTest::test_uchar_vector)
    ) {}
 
    void test_empty()
@@ -55,6 +56,21 @@ struct WriterTest : tpunit::TestFixture
        tar7z::Writer writer;
        ASSERT_TRUE(writer.write("shortnames.tar", ar) == tar7z::T7ZE_OK);
        ASSERT_TRUE(this->filesAreEqual("shortnames.tar", "shortnames_ethalon.tar"));
+   }
+
+   void test_uchar_vector()
+   {
+       tar7z::Archive ar;
+       std::vector<unsigned char> ucharvector;
+       std::string buffer(613, '!');
+       ucharvector.insert(ucharvector.end(), buffer.begin(), buffer.end());
+       ar.add("test.txt", ucharvector, true);
+       ar.add("ignoreme.txt", std::vector<char>(), true);
+       ar.add("ignoreme2.txt", std::vector<char>(), true);
+
+       tar7z::Writer writer;
+       ASSERT_TRUE(writer.write("ucharvector.tar", ar) == tar7z::T7ZE_OK);
+       ASSERT_TRUE(this->filesAreEqual("ucharvector.tar", "ucharvector_ethalon.tar"));
    }
 
    /*! Compares two files and returns true if they are equal
