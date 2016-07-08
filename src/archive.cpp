@@ -54,11 +54,24 @@ void tar7z::Archive::add(const std::string& name, const std::vector<char>& conte
     NameToEntry.insert(std::make_pair(name, pos));
 }
 
+void tar7z::Archive::add(const std::string& name, const std::vector<unsigned char>& contents )
+{
+    std::vector<char> c;
+    c.resize(contents.size());
+    memcpy(&(c[0]), &(contents[0]), contents.size() * sizeof(char));
+    this->add(name, c);
+}
+
+void tar7z::Archive::remove(const std::string &name)
+{
+    // TODO: Do not forget to implement it
+}
+
 void tar7z::Archive::appendHeader(std::vector<char>& contents, const tar7z::Entry& entry, bool link)
 {
     assert(entry.Name.size() < TAR7Z_MAXLEN);
     contents.resize(contents.size() + TAR7Z_TOTAL_HEADER_SIZE, TAR7Z_FILL_CHARACTER);
-    char* offset = &(contents[contents.size() - TAR7Z_MAXLEN]);
+    char* offset = &(contents[contents.size() - TAR7Z_TOTAL_HEADER_SIZE]);
     if (!link)
     {
         strcpy(offset, entry.Name.c_str());

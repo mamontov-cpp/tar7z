@@ -26,7 +26,7 @@ public:
 #endif
     /*! A size of file
      */
-    long Size;
+    long long Size;
     /*! A byte offet for entry
      */
     int Offset;
