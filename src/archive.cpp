@@ -6,9 +6,19 @@
 #include <ctime>
 #include <iterator>
 
+#ifndef TAR7Z_SADDY
+    #include <boost/unordered/unordered_set.hpp>
+#else
+    #include "../../boost/boost-dist/boost/unordered/unordered_set.hpp"
+#endif
 
-void tar7z::Archive::add(const std::string& name, const std::vector<char>& contents, bool default_time)
+
+bool tar7z::Archive::add(const std::string& name, const std::vector<char>& contents, bool default_time)
 {
+    if (tar7z::Archive::validateFileName(name) == false)
+    {
+        return false;
+    }
     if (NameToEntry.find(name) != NameToEntry.end())
     {
         remove(name);
@@ -52,14 +62,16 @@ void tar7z::Archive::add(const std::string& name, const std::vector<char>& conte
     size_t pos = Entries.size();
     Entries.push_back(e);
     NameToEntry.insert(std::make_pair(name, pos));
+    return true;
 }
 
-void tar7z::Archive::add(const std::string& name, const std::vector<unsigned char>& contents, bool default_time)
+bool tar7z::Archive::add(const std::string& name, const std::vector<unsigned char>& contents, bool default_time)
 {
+
     std::vector<char> c;
     c.resize(contents.size());
     memcpy(&(c[0]), &(contents[0]), contents.size() * sizeof(char));
-    this->add(name, c, default_time);
+    return this->add(name, c, default_time);
 }
 
 void tar7z::Archive::remove(const std::string &name)
@@ -140,4 +152,64 @@ unsigned int tar7z::Archive::headerChecksum(const char* contents)
         ++cur;
     }
     return result;
+}
+
+
+static struct InvalidFilenameSet
+{
+    boost::unordered_set<std::string> Names;
+
+    InvalidFilenameSet()
+    {
+        const char* names[] = {
+            "CON",
+            "PRN",
+            "AUX",
+            "NUL",
+            "COM1",
+            "COM2",
+            "COM3",
+            "COM4",
+            "COM5",
+            "COM6",
+            "COM7",
+            "COM8",
+            "COM9",
+            "LPT1",
+            "LPT2",
+            "LPT3",
+            "LPT4",
+            "LPT5",
+            "LPT6",
+            "LPT7",
+            "LPT8",
+            "LPT9",
+            NULL
+        };
+        const char** cur = names;
+        while(*cur)
+        {
+            Names.insert(*cur);
+            ++cur;
+        }
+    }
+
+} InvalidFileNameSet;
+
+
+bool tar7z::Archive::validateFileName(const std::string& filename)
+{
+    // If name is empty - it's invalid
+    if (filename.size() == 0)
+    {
+        return false;
+    }
+    // If name is found is invalid set - it's invalid for Windows
+    if (InvalidFileNameSet.Names.count(filename) != 0)
+    {
+        return false;
+    }
+    // Check filename for invalid characters
+    const char* invalidset = "<>:\"/\\|?*\x1\x2\x3\x4\x5\x6\x7\x8\x9\xA\xB\xC\xD\xE\xF\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F";
+    return strpbrk(&(filename[0]), invalidset) == NULL;
 }

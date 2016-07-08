@@ -34,14 +34,16 @@ public:
         \param[in] name name of file
         \param[in] contents list of contents
         \param[in] default_time should we substitute creation time with 0
+        \return false if name is invalid
      */
-    void add(const std::string& name, const std::vector<char>& contents, bool default_time = false );
+    bool add(const std::string& name, const std::vector<char>& contents, bool default_time = false );
     /*! Adds new file to archive
         \param[in] name name of file
         \param[in] contents list of contents
         \param[in] default_time should we substitute creation time with 0
+        \return false if name is invalid
      */
-    void add(const std::string& name, const std::vector<unsigned char>& contents, bool default_time = false);
+    bool add(const std::string& name, const std::vector<unsigned char>& contents, bool default_time = false);
     /*! Removes a file with specified name from archove
         \param[in] name name of file
      */
@@ -75,6 +77,11 @@ public:
         \return checksum
      */
     static unsigned int headerChecksum(const char* contents);
+    /*! Validates file name, returns true if valid
+        \param[in] filename name of file
+        \return true if valid
+     */
+    static bool validateFileName(const std::string& filename);
     /*! A byte contents of archive
      */
     std::vector<char> Contents;
@@ -84,7 +91,6 @@ public:
     /*! A mapping between name of file and corresponding entry
      */
     boost::unordered_map<std::string, size_t> NameToEntry;
-
 };
 
 }
