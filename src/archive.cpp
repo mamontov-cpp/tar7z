@@ -77,7 +77,6 @@ bool tar7z::Archive::add(const std::string& name, const std::vector<unsigned cha
 
 void tar7z::Archive::remove(const std::string &name)
 {
-    // TODO: Do not forget to implement it
     boost::unordered_map<std::string, size_t>::iterator it = NameToEntry.find(name);
     if (it == NameToEntry.end())
     {
