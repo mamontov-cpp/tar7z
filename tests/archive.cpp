@@ -20,7 +20,8 @@ struct ArchiveTest : tpunit::TestFixture
    ArchiveTest() : tpunit::TestFixture(
            TEST(ArchiveTest::test_add),
            TEST(ArchiveTest::test_remove),
-           TEST(ArchiveTest::test_add_replace)
+           TEST(ArchiveTest::test_add_replace),
+           TEST(ArchiveTest::test_file)
    ) {}
 
    void test_add()
@@ -150,6 +151,18 @@ struct ArchiveTest : tpunit::TestFixture
            ASSERT_TRUE(writer.write("replace2.tar", ar) == tar7z::T7ZE_OK);
            ASSERT_TRUE(this->filesAreEqual("replace2.tar", "replace2_ethalon.tar"));
        }
+   }
+
+
+   void test_file()
+   {
+       tar7z::Archive ar;
+       std::string testcontents = "this is another data";
+       ar.add("testname", this->stringToUcharVector("this is useless data, that will be overwritten anyway"));
+       ar.add("testname", this->stringToUcharVector(testcontents));
+       ASSERT_TRUE(ar.file("testname"));
+       ASSERT_TRUE( memcmp(ar.file("testname")->contents(), &(testcontents[0]), testcontents.size()) == 0);
+       ASSERT_TRUE(ar.file("dontcare") == NULL);
    }
 
    /*! Compares two files and returns true if they are equal

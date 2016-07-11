@@ -13,13 +13,23 @@
 #endif
 
 
+tar7z::Entry* tar7z::Archive::file(const std::string& name)
+{
+    boost::unordered_map<std::string, size_t>::iterator it = m_name_to_entry.find(name);
+    if (it == m_name_to_entry.end())
+    {
+        return NULL;
+    }
+    return &(m_entries[it->second]);
+}
+
 bool tar7z::Archive::add(const std::string& name, const std::vector<char>& contents, bool default_time)
 {
     if (tar7z::Archive::validateFileName(name) == false)
     {
         return false;
     }
-    if (NameToEntry.find(name) != NameToEntry.end())
+    if (m_name_to_entry.find(name) != m_name_to_entry.end())
     {
         remove(name);
     }
@@ -61,9 +71,9 @@ bool tar7z::Archive::add(const std::string& name, const std::vector<char>& conte
     // Synchronize entry name with actual name, passed in argument
     e.Name = name;
 
-    size_t pos = Entries.size();
-    Entries.push_back(e);
-    NameToEntry.insert(std::make_pair(name, pos));
+    size_t pos = m_entries.size();
+    m_entries.push_back(e);
+    m_name_to_entry.insert(std::make_pair(name, pos));
     return true;
 }
 
@@ -77,14 +87,14 @@ bool tar7z::Archive::add(const std::string& name, const std::vector<unsigned cha
 
 void tar7z::Archive::remove(const std::string &name)
 {
-    boost::unordered_map<std::string, size_t>::iterator it = NameToEntry.find(name);
-    if (it == NameToEntry.end())
+    boost::unordered_map<std::string, size_t>::iterator it = m_name_to_entry.find(name);
+    if (it == m_name_to_entry.end())
     {
         return;
     }
 
     size_t position = it->second;
-    tar7z::Entry& entry = Entries[position];
+    tar7z::Entry& entry = m_entries[position];
     size_t offset = entry.Offset;
     size_t size = tar7z::Archive::sizeWithPadding(entry.Size);
 
@@ -99,11 +109,11 @@ void tar7z::Archive::remove(const std::string &name)
     }
 
     Contents.erase(Contents.begin() + offset, Contents.begin() + (offset + size));
-    NameToEntry.erase(name);
-    Entries.erase(Entries.begin() + position);
+    m_name_to_entry.erase(name);
+    m_entries.erase(m_entries.begin() + position);
 
     // Rebuild NameToEntry to ensure link correctness
-    for(it = NameToEntry.begin(); it!= NameToEntry.end(); ++it)
+    for(it = m_name_to_entry.begin(); it!= m_name_to_entry.end(); ++it)
     {
         if (it->second >= position)
         {

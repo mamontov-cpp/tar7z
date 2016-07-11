@@ -50,18 +50,10 @@ public:
         \param[in] name name of file
      */
     void remove(const std::string& name);
-
-    /*! Appends header for the entry. The entry must have name of <100 characters
-        \param[in,out] contents a changed content
-        \param[in] entry an entry to be added
-        \param[in] link whether it's link
-        \param[in] default_time whether we should default time with zero
-     */
-    static void appendHeader(std::vector<char>& contents, const tar7z::Entry& entry, bool link, bool default_time);
     /*! A byte contents of archive
      */
     std::vector<char> Contents;
-
+protected:
     /*! Returns size with padding
         \param sz size
         \return size
@@ -76,7 +68,13 @@ public:
         }
         return result;
     }
-protected:
+    /*! Appends header for the entry. The entry must have name of <100 characters
+        \param[in,out] contents a changed content
+        \param[in] entry an entry to be added
+        \param[in] link whether it's link
+        \param[in] default_time whether we should default time with zero
+     */
+    static void appendHeader(std::vector<char>& contents, const tar7z::Entry& entry, bool link, bool default_time);
     /*! Appends contents with padding
         \param destination a destination
         \param begin a beginning
@@ -105,10 +103,10 @@ protected:
     static bool validateFileName(const std::string& filename);
     /*! A list of entries
      */
-    std::vector<tar7z::Entry> Entries;
+    std::vector<tar7z::Entry> m_entries;
     /*! A mapping between name of file and corresponding entry
      */
-    boost::unordered_map<std::string, size_t> NameToEntry;
+    boost::unordered_map<std::string, size_t> m_name_to_entry;
 };
 
 }
