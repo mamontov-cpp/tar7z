@@ -21,7 +21,10 @@ struct WriterTest : tpunit::TestFixture
            TEST(WriterTest::test_empty),
            TEST(WriterTest::test_one_simple_file),
            TEST(WriterTest::test_four_files_with_short_names),
-           TEST(WriterTest::test_uchar_vector)
+           TEST(WriterTest::test_uchar_vector),
+           TEST(WriterTest::test_longname_in_beginning),
+           TEST(WriterTest::test_longname_in_center),
+           TEST(WriterTest::test_longname_in_end)
    ) {}
 
    void test_empty()
@@ -71,6 +74,44 @@ struct WriterTest : tpunit::TestFixture
        tar7z::Writer writer;
        ASSERT_TRUE(writer.write("ucharvector.tar", ar) == tar7z::T7ZE_OK);
        ASSERT_TRUE(this->filesAreEqual("ucharvector.tar", "ucharvector_ethalon.tar"));
+   }
+
+   void test_longname_in_beginning()
+   {
+       tar7z::Archive ar;
+       ar.add("this file is intentionally longer than one hundred of characters because we need to test long names no part should be changed.txt", this->stringToUcharVector("this is content of file with long name"), true);
+       ar.add("testfile.txt", this->stringToUcharVector("short content"), true);
+       ar.add("testfile1.txt", this->stringToUcharVector("very short content"), true);
+
+       tar7z::Writer writer;
+       ASSERT_TRUE(writer.write("longnameinbeginning.tar", ar) == tar7z::T7ZE_OK);
+       ASSERT_TRUE(this->filesAreEqual("longnameinbeginning.tar", "longnameinbeginning_ethalon.tar"));
+   }
+
+   void test_longname_in_center()
+   {
+       tar7z::Archive ar;
+       ar.add("testfile.txt", this->stringToUcharVector("short content"), true);
+       ar.add("this file is intentionally longer than one hundred of characters because we need to test long names no part should be changed.txt", this->stringToUcharVector("this is content of file with long name"), true);
+       ar.add("this is copy of file is intentionally longer than one hundred of characters because we need to test long names no part should be changed.txt", this->stringToUcharVector("this is content of second file with long name"), true);
+       ar.add("testfile1.txt", this->stringToUcharVector("very short content"), true);
+
+       tar7z::Writer writer;
+       ASSERT_TRUE(writer.write("longnameincenter.tar", ar) == tar7z::T7ZE_OK);
+       ASSERT_TRUE(this->filesAreEqual("longnameincenter.tar", "longnameincenter_ethalon.tar"));
+   }
+
+   void test_longname_in_end()
+   {
+       tar7z::Archive ar;
+       ar.add("testfile.txt", this->stringToUcharVector("short content"), true);
+       ar.add("testfile1.txt", this->stringToUcharVector("very short content"), true);
+       ar.add("this file is intentionally longer than one hundred of characters because we need to test long names no part should be changed.txt", this->stringToUcharVector("this is content of file with long name"), true);
+       ar.add("this is copy of file is intentionally longer than one hundred of characters because we need to test long names no part should be changed.txt", this->stringToUcharVector("this is content of second file with long name"), true);
+
+       tar7z::Writer writer;
+       ASSERT_TRUE(writer.write("longnameinend.tar", ar) == tar7z::T7ZE_OK);
+       ASSERT_TRUE(this->filesAreEqual("longnameinend.tar", "longnameinend_ethalon.tar"));
    }
 
    /*! Compares two files and returns true if they are equal
