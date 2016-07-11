@@ -18,6 +18,8 @@
 namespace tar7z
 {
 
+class Entry;
+
 class Archive
 {
 public:
@@ -56,6 +58,25 @@ public:
         \param[in] default_time whether we should default time with zero
      */
     static void appendHeader(std::vector<char>& contents, const tar7z::Entry& entry, bool link, bool default_time);
+    /*! A byte contents of archive
+     */
+    std::vector<char> Contents;
+
+    /*! Returns size with padding
+        \param sz size
+        \return size
+     */
+    inline static size_t sizeWithPadding(size_t sz)
+    {
+        size_t result = sz;
+        size_t oddpart = result % TAR7Z_ALIGNMENT_BLOCK;
+        if (oddpart)
+        {
+            result +=  (TAR7Z_ALIGNMENT_BLOCK - oddpart);
+        }
+        return result;
+    }
+protected:
     /*! Appends contents with padding
         \param destination a destination
         \param begin a beginning
@@ -82,9 +103,6 @@ public:
         \return true if valid
      */
     static bool validateFileName(const std::string& filename);
-    /*! A byte contents of archive
-     */
-    std::vector<char> Contents;
     /*! A list of entries
      */
     std::vector<tar7z::Entry> Entries;

@@ -36,6 +36,7 @@ bool tar7z::Archive::add(const std::string& name, const std::vector<char>& conte
 
         // Append link element, which will store actual name of element
         tar7z::Entry link;
+        link.Parent = this;
         link.Name = TAR7Z_LONGLINKNAME;
 #ifdef TAR7Z_NEED_CREATION_TIME_AND_FILE_MODE
         link.Mode = 0777;
@@ -53,6 +54,7 @@ bool tar7z::Archive::add(const std::string& name, const std::vector<char>& conte
 #endif
     e.Size = contents.size();
     e.Offset = this->Contents.size() + TAR7Z_TOTAL_HEADER_SIZE;
+    e.Parent = this;
     appendHeader(this->Contents, e, false, default_time);
     appendAndPadContents(this->Contents, contents.begin(), contents.end());
 
@@ -67,7 +69,6 @@ bool tar7z::Archive::add(const std::string& name, const std::vector<char>& conte
 
 bool tar7z::Archive::add(const std::string& name, const std::vector<unsigned char>& contents, bool default_time)
 {
-
     std::vector<char> c;
     c.resize(contents.size());
     memcpy(&(c[0]), &(contents[0]), contents.size() * sizeof(char));
@@ -77,6 +78,39 @@ bool tar7z::Archive::add(const std::string& name, const std::vector<unsigned cha
 void tar7z::Archive::remove(const std::string &name)
 {
     // TODO: Do not forget to implement it
+    boost::unordered_map<std::string, size_t>::iterator it = NameToEntry.find(name);
+    if (it == NameToEntry.end())
+    {
+        return;
+    }
+
+    size_t position = it->second;
+    tar7z::Entry& entry = Entries[position];
+    size_t offset = entry.Offset;
+    size_t size = tar7z::Archive::sizeWithPadding(entry.Size);
+
+    // Take care of header - we should remove it also
+    offset -= TAR7Z_TOTAL_HEADER_SIZE;
+    size +=  TAR7Z_TOTAL_HEADER_SIZE;
+    if (name.size() > TAR7Z_MAXLEN)
+    {
+        size_t linksize = tar7z::Archive::sizeWithPadding(name.size()) + TAR7Z_TOTAL_HEADER_SIZE;
+        offset -= linksize;
+        size += linksize;
+    }
+
+    Contents.erase(Contents.begin() + offset, Contents.begin() + (offset + size));
+    NameToEntry.erase(name);
+    Entries.erase(Entries.begin() + position);
+
+    // Rebuild NameToEntry to ensure link correctness
+    for(it = NameToEntry.begin(); it!= NameToEntry.end(); ++it)
+    {
+        if (it->second >= position)
+        {
+            it->second -= 1;
+        }
+    }
 }
 
 void tar7z::Archive::appendHeader(std::vector<char>& contents, const tar7z::Entry& entry, bool link, bool default_time)
