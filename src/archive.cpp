@@ -122,6 +122,17 @@ void tar7z::Archive::remove(const std::string &name)
     }
 }
 
+void tar7z::Archive::addEntry(const std::string& name, const tar7z::Entry& e)
+{
+    if  (m_name_to_entry.count(name) > 1)
+    {
+        m_name_to_entry.erase(name);
+    }
+    size_t position = m_entries.size();
+    m_entries.push_back(e);
+    m_name_to_entry.insert(std::make_pair(name, position));
+}
+
 void tar7z::Archive::appendHeader(std::vector<char>& contents, const tar7z::Entry& entry, bool link, bool default_time)
 {
     assert(entry.Name.size() < TAR7Z_MAXLEN);

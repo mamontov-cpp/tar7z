@@ -21,6 +21,7 @@ public:
     /*! Writes archive to specified file
         \param[in] filename a name for file
         \param[in] ar archive
+        \return error if occured
      */
     virtual tar7z::Error write(const std::string& filename, const tar7z::Archive& ar);
     /*! Can be inherited

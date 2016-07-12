@@ -50,6 +50,11 @@ public:
         \param[in] name name of file
      */
     void remove(const std::string& name);
+    /*! Adds new entry to list
+       \param[in] name a name
+       \param[in] e entry
+     */
+    void addEntry(const std::string& name, const tar7z::Entry& e);
     /*! A byte contents of archive
      */
     std::vector<char> Contents;
