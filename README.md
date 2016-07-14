@@ -22,4 +22,4 @@ Note, that reader will ignore file mode and creation time, unless TAR7Z_NEED_CRE
 
 ## Status
 
-At the moment, this project is actively developed. It will be released as soon as possible.
+A first release is [available](https://github.com/mamontov-cpp/tar7z/releases/tag/1.0)!
