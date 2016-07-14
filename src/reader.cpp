@@ -9,7 +9,7 @@ tar7z::Error tar7z::Reader::read(const std::string& filename, tar7z::Archive& ar
 {
     ar.Contents.clear();
 
-    std::ifstream file(filename.c_str());
+    std::ifstream file(filename.c_str(), std::ios::binary);
     // Failed to open
     if  (file.bad())
     {
