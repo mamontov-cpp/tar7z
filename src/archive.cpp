@@ -9,7 +9,7 @@
 #ifndef TAR7Z_SADDY
     #include <boost/unordered/unordered_set.hpp>
 #else
-    #include "../../boost/boost-dist/boost/unordered/unordered_set.hpp"
+    #include "../../boost-dist/boost/unordered/unordered_set.hpp"
 #endif
 
 size_t tar7z::Archive::count() const
