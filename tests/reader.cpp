@@ -23,7 +23,8 @@ struct ReaderTest : tpunit::TestFixture
            TEST(ReaderTest::test_four_files_with_short_names),
            TEST(ReaderTest::test_longname_in_beginning),
            TEST(ReaderTest::test_longname_in_center),
-           TEST(ReaderTest::test_longname_in_end)
+           TEST(ReaderTest::test_longname_in_end),
+           TEST(ReaderTest::test_7z)
    ) {}
 
    void test_empty()
@@ -171,6 +172,15 @@ struct ReaderTest : tpunit::TestFixture
            std::string ethalon("very short content");
            ASSERT_TRUE(memcmp(buf, &(ethalon[0]), ethalon.size()) == 0);
        }
+   }
+
+   void test_7z()
+   {
+       tar7z::Archive ar;
+       tar7z::Reader reader;
+       tar7z::Error error = reader.read("7z.tar", ar);
+       ASSERT_TRUE(error == tar7z::T7ZE_OK);
+       ASSERT_TRUE(ar.count() == 4);
    }
 
 } reader_test;
