@@ -12,6 +12,10 @@
     #include "../../boost/boost-dist/boost/unordered/unordered_set.hpp"
 #endif
 
+size_t tar7z::Archive::count() const
+{
+    return m_entries.size();
+}
 
 tar7z::Entry* tar7z::Archive::file(const std::string& name)
 {

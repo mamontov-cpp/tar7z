@@ -21,7 +21,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 link_directories("../lib")
 
-set(SRCS "main.cpp" "writer.cpp" "archive.cpp")
+set(SRCS "main.cpp" "writer.cpp" "archive.cpp" "reader.cpp")
 
 add_executable(${TAR7Z_EXECUTABLE_NAME} ${SRCS} ${HDRS})
 

@@ -27,6 +27,10 @@ public:
     {
 
     }
+    /*! Returns amount of files in archive
+        \return amount of files
+     */
+    size_t count() const;
     /*! Returns file by it's name or NULL if not found
         \param[in] name a name of file
         \return link to entry
