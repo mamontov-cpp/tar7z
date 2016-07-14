@@ -9,7 +9,7 @@
 namespace tar7z
 {
 
-/*! A basic reader, that could read TAR archives into archive
+/*! A basic reader, that could read TAR archives into tar7z::Archive
  */
 class Reader
 {

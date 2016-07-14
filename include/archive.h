@@ -1,3 +1,8 @@
+/*! \mainpage tar7z
+
+    A 7-zip compatible TAR archive reader/writer with support for file names larger than 100 characters.
+    See https://github.com/mamontov-cpp/tar7z for details.
+ */
 /*! \file archive.h
 
     Defines a main archive list
@@ -20,6 +25,8 @@ namespace tar7z
 
 class Entry;
 
+/*! A main class, that works that in-memory archive with all data, stored as one binary vector
+ */
 class Archive
 {
 public:
@@ -54,22 +61,25 @@ public:
         \param[in] name name of file
      */
     void remove(const std::string& name);
-    /*! Adds new entry to list
-       \param[in] name a name
-       \param[in] e entry
+    /*! Adds new entry to list. Used by reader to actually populate archive with data, that was read from file.
+        You should not use it, unless you really need it.
+        \param[in] name a name
+        \param[in] e entry
      */
     void addEntry(const std::string& name, const tar7z::Entry& e);
-    /*! Validates file name, returns true if valid
+    /*! Validates file name, returns true, if passed string could be used as real file name. Used to check, whether specified file
+        could be added into archive.
         \param[in] filename name of file
         \return true if valid
      */
     static bool validateFileName(const std::string& filename);
-    /*! Compute header's checksum
+    /*! Compute header's checksum. Used by reader to check file's content.
+        You should not use it, unless you really need it.
         \param[in] contents content of checksum
         \return checksum
      */
     static unsigned int headerChecksum(const char* contents);
-    /*! Returns size with padding
+    /*! Returns size, extending it to size of block. Used by reader.
         \param sz size
         \return size
      */
@@ -83,18 +93,18 @@ public:
         }
         return result;
     }
-    /*! A byte contents of archive
+    /*! A binary contents of archive
      */
     std::vector<char> Contents;
 protected:    
-    /*! Appends header for the entry. The entry must have name of <100 characters
+    /*! Appends header for the entry. The entry must have name of less than 100 characters
         \param[in,out] contents a changed content
         \param[in] entry an entry to be added
         \param[in] link whether it's link
         \param[in] default_time whether we should default time with zero
      */
     static void appendHeader(std::vector<char>& contents, const tar7z::Entry& entry, bool link, bool default_time);
-    /*! Appends contents with padding
+    /*! Appends contents vector with padding
         \param destination a destination
         \param begin a beginning
         \param end an ending of file

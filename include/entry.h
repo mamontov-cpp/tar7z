@@ -10,10 +10,14 @@ namespace tar7z
 
 class Archive;
 
+/*! A simple description of file, that is stored inside of archive.
+ */
 class Entry
 {
 public:
-    /*! A name for entry
+    /*! A name for entry. Note, that this could be not actual file, because it's read from file.
+        In that case it would be cropped down to 100 character, but still you can obtain it by full name
+        from archive
      */
     std::string Name;
 #ifdef TAR7Z_NEED_CREATION_TIME_AND_FILE_MODE
@@ -24,7 +28,7 @@ public:
      */
     long Time;
 #endif
-    /*! A size of file
+    /*! A size of file in bytes
      */
     long long Size;
     /*! A byte offet for entry
@@ -33,7 +37,7 @@ public:
     /*! A parent archive
      */
     tar7z::Archive* Parent;
-    /*! Whether entry has long name link, due it's name
+    /*! Whether entry is preceded by link file and, due that it's real name is larger than 100 characters
      */
     bool HasLongNameLink;
 

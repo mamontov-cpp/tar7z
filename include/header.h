@@ -57,7 +57,7 @@ namespace tar7z
  */
 #define TAR7Z_TYPEFLAG_OFFSET (156)
 
-/*! We support only pure files in tar or 7z links
+/*! We support only pure files in tar or 7-zip (or libtar) links, which always followed by the file
  */
 enum FileType
 {
@@ -71,24 +71,24 @@ enum FileType
  */
 struct Header
 {
-   char Name[TAR7Z_MAXLEN];      // file name
-   char Mode[8];                 // file mode
-   char Uid[8];                  // Owner's numeric user ID
-   char Gid[8];                  // Group's numeric user ID
-   char Size[12];                // File size in bytes (octal base)
-   char Mtime[12];               // Last modification time in
-                                 // numeric Unix time format (octal)
-   char CheckSum[8];             // Checksum for header record
-   char TypeFlag[1];             // file type
-   char LinkName[100];           // Name of linked file
-   char Magic[6];                // UStar indicator "ustar"
-   char Version[2];              // UStar version "00"
-   char Uname[32];               // Owner user name
-   char Gname[32];               // Owner group name
-   char DevMajor[8];             // Device major number
-   char DevMinor[8];             // Device minor number
-   char Prefix[155];             // Filename prefix
-   char Padding[12];             // padding
+   char Name[TAR7Z_MAXLEN];      //!< File name
+   char Mode[8];                 //!< File mode
+   char Uid[8];                  //!< Owner's numeric user ID
+   char Gid[8];                  //!< Group's numeric user ID
+   char Size[12];                //!< File size in bytes (octal base)
+   char Mtime[12];               //!< Last modification time in
+                                 //!< numeric Unix time format (octal)
+   char CheckSum[8];             //!< Checksum for header record
+   char TypeFlag[1];             //!< File type
+   char LinkName[100];           //!< Name of linked file
+   char Magic[6];                //!< UStar indicator "ustar"
+   char Version[2];              //!< UStar version "00"
+   char Uname[32];               //!< Owner user name
+   char Gname[32];               //!< Owner group name
+   char DevMajor[8];             //!< Device major number
+   char DevMinor[8];             //!< Device minor number
+   char Prefix[155];             //!< Filename prefix
+   char Padding[12];             //!< padding
 };
 
 #pragma pack(pop)
