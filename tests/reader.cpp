@@ -24,7 +24,9 @@ struct ReaderTest : tpunit::TestFixture
            TEST(ReaderTest::test_longname_in_beginning),
            TEST(ReaderTest::test_longname_in_center),
            TEST(ReaderTest::test_longname_in_end),
-           TEST(ReaderTest::test_7z)
+           TEST(ReaderTest::test_7z),
+           TEST(ReaderTest::test_not_exists),
+           TEST(ReaderTest::test_invalid_file)
    ) {}
 
    void test_empty()
@@ -181,6 +183,25 @@ struct ReaderTest : tpunit::TestFixture
        tar7z::Error error = reader.read("7z.tar", ar);
        ASSERT_TRUE(error == tar7z::T7ZE_OK);
        ASSERT_TRUE(ar.count() == 4);
+   }
+
+   void test_not_exists()
+   {
+       tar7z::Archive ar;
+       tar7z::Reader reader;
+       tar7z::Error error = reader.read("notexists.tar", ar);
+       ASSERT_TRUE(error == tar7z::T7ZE_CANNOT_OPEN_FILE);
+   }
+
+   void test_invalid_file()
+   {
+       tar7z::Archive ar;
+       tar7z::Reader reader;
+       tar7z::Error error = reader.read("invalid.tar", ar);
+       ASSERT_TRUE(error == tar7z::T7ZE_INVALID_CHECKSUM);
+
+       error = reader.read("tooempty.tar", ar);
+       ASSERT_TRUE(error == tar7z::T7ZE_NO_TRAILING_ZEROES);
    }
 
 } reader_test;

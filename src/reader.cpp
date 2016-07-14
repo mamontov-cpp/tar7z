@@ -11,7 +11,7 @@ tar7z::Error tar7z::Reader::read(const std::string& filename, tar7z::Archive& ar
 
     std::ifstream file(filename.c_str(), std::ios::binary);
     // Failed to open
-    if  (file.bad())
+    if  (file.good() == false)
     {
         return tar7z::T7ZE_CANNOT_OPEN_FILE;
     }
@@ -126,12 +126,12 @@ tar7z::Error tar7z::Reader::readHeader(size_t offset, tar7z::Entry& entry)
     unsigned int header_checksum = 0;
     if (sscanf(buffer + TAR7Z_CHECKSUM_OFFSET, "%07o", &header_checksum) != 1)
     {
-        return tar7z::T7ZE_INVALID_HEADER;
+        return tar7z::T7ZE_INVALID_CHECKSUM;
     }
     // Checksum mismatch
     if (real_checksum != header_checksum)
     {
-        return tar7z::T7ZE_INVALID_HEADER;
+        return tar7z::T7ZE_INVALID_CHECKSUM;
     }
 
     char buf[TAR7Z_MAXLEN + 1] = {0};
