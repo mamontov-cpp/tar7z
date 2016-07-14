@@ -22,4 +22,4 @@ Note, that reader will ignore file mode and creation time, unless TAR7Z_NEED_CRE
 
 ## Status
 
-A first release is [available](https://github.com/mamontov-cpp/tar7z/releases/tag/1.0)!
+A first release is [available](https://github.com/mamontov-cpp/tar7z/releases/tag/1.0.1)!
