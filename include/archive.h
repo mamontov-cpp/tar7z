@@ -17,7 +17,7 @@
 #ifndef TAR7Z_SADDY
     #include <boost/unordered/unordered_map.hpp>
 #else
-    #include "../../boost/boost-dist/boost/unordered/unordered_map.hpp"
+    #include "../../boost-dist/boost/unordered/unordered_map.hpp"
 #endif
 
 namespace tar7z

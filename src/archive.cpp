@@ -1,6 +1,6 @@
 #include "../include/archive.h"
-#include "header.h"
-#include "entry.h"
+#include "../include/header.h"
+#include "../include/entry.h"
 #include <cstring>
 #include <cassert>
 #include <ctime>
