@@ -55,10 +55,16 @@ public:
        \param[in] e entry
      */
     void addEntry(const std::string& name, const tar7z::Entry& e);
-    /*! A byte contents of archive
+    /*! Validates file name, returns true if valid
+        \param[in] filename name of file
+        \return true if valid
      */
-    std::vector<char> Contents;
-protected:
+    static bool validateFileName(const std::string& filename);
+    /*! Compute header's checksum
+        \param[in] contents content of checksum
+        \return checksum
+     */
+    static unsigned int headerChecksum(const char* contents);
     /*! Returns size with padding
         \param sz size
         \return size
@@ -73,6 +79,10 @@ protected:
         }
         return result;
     }
+    /*! A byte contents of archive
+     */
+    std::vector<char> Contents;
+protected:    
     /*! Appends header for the entry. The entry must have name of <100 characters
         \param[in,out] contents a changed content
         \param[in] entry an entry to be added
@@ -96,16 +106,6 @@ protected:
             destination.resize(destination.size() + (TAR7Z_ALIGNMENT_BLOCK - oddpart), TAR7Z_FILL_CHARACTER);
         }
     }
-    /*! Compute header's checksum
-        \param[in] contents content of checksum
-        \return checksum
-     */
-    static unsigned int headerChecksum(const char* contents);
-    /*! Validates file name, returns true if valid
-        \param[in] filename name of file
-        \return true if valid
-     */
-    static bool validateFileName(const std::string& filename);
     /*! A list of entries
      */
     std::vector<tar7z::Entry> m_entries;

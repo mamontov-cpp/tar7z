@@ -27,6 +27,15 @@ public:
     /*! Can be inherited
      */
     virtual ~Reader();
+protected:
+    /*! Read the archive into header
+        \param[in] offset offset of header from beginning
+        \param[out] entry the entry
+     */
+    tar7z::Error readHeader(size_t offset, tar7z::Entry& entry);
+    /*! A buffer for reading
+     */
+    std::vector<char> * m_buffer;
 };
 
 }
