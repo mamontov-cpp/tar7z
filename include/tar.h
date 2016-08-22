@@ -4,3 +4,5 @@
  */
 #pragma once
 #include "archive.h"
+#include "reader.h"
+#include "writer.h"
