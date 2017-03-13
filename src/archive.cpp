@@ -6,10 +6,23 @@
 #include <ctime>
 #include <iterator>
 
-#ifndef TAR7Z_SADDY
-    #include <boost/unordered/unordered_set.hpp>
+#if __cplusplus >= 201103L
+    #include <unordered_set>
+    
+    namespace tar7z
+    {
+        typedef std::unordered_set<std::string> StringSet;
+    }
 #else
-    #include "../../boost-dist/boost/unordered/unordered_set.hpp"
+    #ifndef TAR7Z_SADDY
+        #include <boost/unordered/unordered_set.hpp>
+    #else
+        #include "../../boost-dist/boost/unordered/unordered_set.hpp"
+    #endif
+    namespace tar7z
+    {
+        typedef boost::unordered_set<std::string> StringSet;
+    }
 #endif
 
 size_t tar7z::Archive::count() const
@@ -19,7 +32,7 @@ size_t tar7z::Archive::count() const
 
 tar7z::Entry* tar7z::Archive::file(const std::string& name)
 {
-    boost::unordered_map<std::string, size_t>::iterator it = m_name_to_entry.find(name);
+    tar7z::EntryMap::iterator it = m_name_to_entry.find(name);
     if (it == m_name_to_entry.end())
     {
         return NULL;
@@ -91,7 +104,7 @@ bool tar7z::Archive::add(const std::string& name, const std::vector<unsigned cha
 
 void tar7z::Archive::remove(const std::string &name)
 {
-    boost::unordered_map<std::string, size_t>::iterator it = m_name_to_entry.find(name);
+    tar7z::EntryMap::iterator it = m_name_to_entry.find(name);
     if (it == m_name_to_entry.end())
     {
         return;
@@ -215,7 +228,7 @@ unsigned int tar7z::Archive::headerChecksum(const char* contents)
 
 static struct InvalidFilenameSet
 {
-    boost::unordered_set<std::string> Names;
+    tar7z::StringSet Names;
 
     InvalidFilenameSet()
     {
