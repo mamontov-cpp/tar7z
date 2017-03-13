@@ -6,7 +6,7 @@
 #include <ctime>
 #include <iterator>
 
-#if __cplusplus >= 201103L
+#ifdef TAR7Z_HAS_UNORDERED_MAP
     #include <unordered_set>
     
     namespace tar7z
