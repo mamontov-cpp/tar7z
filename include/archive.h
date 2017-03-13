@@ -14,16 +14,32 @@
 #include <vector>
 #include <utility>
 
-#ifndef TAR7Z_SADDY
-    #include <boost/unordered/unordered_map.hpp>
+namespace tar7z
+{
+    class Entry;
+}
+
+#if __cplusplus >= 201103L
+    #include <unordered_map>
+    namespace tar7z
+    {
+        typedef std::unordered_map<std::string, size_t> EntryMap
+    }
 #else
-    #include "../../boost-dist/boost/unordered/unordered_map.hpp"
+    #ifndef TAR7Z_SADDY
+        #include <boost/unordered/unordered_map.hpp>
+    #else
+        #include "../../boost-dist/boost/unordered/unordered_map.hpp"
+    #endif
+    
+    namespace tar7z
+    {
+        typedef boost::unordered_map<std::string, size_t> EntryMap
+    }
 #endif
 
 namespace tar7z
 {
-
-class Entry;
 
 /*! A main class, that works that in-memory archive with all data, stored as one binary vector
  */
@@ -125,7 +141,7 @@ protected:
     std::vector<tar7z::Entry> m_entries;
     /*! A mapping between name of file and corresponding entry
      */
-    boost::unordered_map<std::string, size_t> m_name_to_entry;
+    tar7z::EntryMap m_name_to_entry;
 };
 
 }
