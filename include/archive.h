@@ -20,6 +20,14 @@ namespace tar7z
 }
 
 #if __cplusplus >= 201103L
+    #define TAR7Z_HAS_UNORDERED_MAP
+#else
+    #if _MSC_VER >= 1900
+        #define TAR7Z_HAS_UNORDERED_MAP
+    #endif 
+#endif
+
+#ifdef TAR7Z_HAS_UNORDERED_MAP
     #include <unordered_map>
     namespace tar7z
     {
