@@ -23,7 +23,7 @@ namespace tar7z
     #include <unordered_map>
     namespace tar7z
     {
-        typedef std::unordered_map<std::string, size_t> EntryMap
+        typedef std::unordered_map<std::string, size_t> EntryMap;
     }
 #else
     #ifndef TAR7Z_SADDY
@@ -34,7 +34,7 @@ namespace tar7z
     
     namespace tar7z
     {
-        typedef boost::unordered_map<std::string, size_t> EntryMap
+        typedef boost::unordered_map<std::string, size_t> EntryMap;
     }
 #endif
 
