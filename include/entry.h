@@ -43,7 +43,7 @@ public:
 
     /*! Constructs default entry
      */
-    inline Entry() : Parent(NULL), HasLongNameLink(false)
+    inline Entry() : Parent(nullptr), HasLongNameLink(false)
     {
 
     }
@@ -58,7 +58,7 @@ public:
       Time(0),
 #endif
       Offset(offset),
-      Parent(NULL),
+      Parent(nullptr),
       HasLongNameLink(false)
     {
 

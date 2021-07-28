@@ -35,7 +35,7 @@ tar7z::Entry* tar7z::Archive::file(const std::string& name)
     tar7z::EntryMap::iterator it = m_name_to_entry.find(name);
     if (it == m_name_to_entry.end())
     {
-        return NULL;
+        return nullptr;
     }
     return &(m_entries[it->second]);
 }
@@ -67,7 +67,7 @@ bool tar7z::Archive::add(const std::string& name, const std::vector<char>& conte
         link.Name = TAR7Z_LONGLINKNAME;
 #ifdef TAR7Z_NEED_CREATION_TIME_AND_FILE_MODE
         link.Mode = 0777;
-        link.Time = time(NULL);
+        link.Time = time(nullptr);
 #endif
         link.Size = name.size();
         appendHeader(this->Contents, link, true, default_time);
@@ -77,7 +77,7 @@ bool tar7z::Archive::add(const std::string& name, const std::vector<char>& conte
     // Append actual file
 #ifdef TAR7Z_NEED_CREATION_TIME_AND_FILE_MODE
     e.Mode = 0777;
-    e.Time = time(NULL);
+    e.Time = time(nullptr);
 #endif
     e.Size = contents.size();
     e.Offset = this->Contents.size() + TAR7Z_TOTAL_HEADER_SIZE;
@@ -179,7 +179,7 @@ void tar7z::Archive::appendHeader(std::vector<char>& contents, const tar7z::Entr
 #ifdef TAR7Z_NEED_CREATION_TIME_AND_FILE_MODE
         sprintf(offset + TAR7Z_MTIME_OFFSET, "%011lo", entry.Time);
 #else
-        sprintf(offset + TAR7Z_MTIME_OFFSET, "%011lo", time(NULL));
+        sprintf(offset + TAR7Z_MTIME_OFFSET, "%011lo", time(nullptr));
 #endif
     }
     sprintf(offset + TAR7Z_SIZE_OFFSET, "%011llo", entry.Size);
@@ -255,7 +255,7 @@ static struct InvalidFilenameSet
             "LPT7",
             "LPT8",
             "LPT9",
-            NULL
+            nullptr
         };
         const char** cur = names;
         while(*cur)
@@ -282,5 +282,5 @@ bool tar7z::Archive::validateFileName(const std::string& filename)
     }
     // Check filename for invalid characters
     const char* invalidset = "<>:\"/\\|?*\x1\x2\x3\x4\x5\x6\x7\x8\x9\xA\xB\xC\xD\xE\xF\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F";
-    return strpbrk(&(filename[0]), invalidset) == NULL;
+    return strpbrk(&(filename[0]), invalidset) == nullptr;
 }
