@@ -34,7 +34,7 @@ struct ReaderTest : tpunit::TestFixture
       tar7z::Archive ar;
       tar7z::Reader reader;
       tar7z::Error error = reader.read("empty_ethalon.tar", ar);
-      ASSERT_TRUE(error == tar7z::T7ZE_OK);
+      ASSERT_TRUE(error == tar7z::Error::T7ZE_OK);
       ASSERT_TRUE(ar.count() == 0);
    }
 
@@ -43,7 +43,7 @@ struct ReaderTest : tpunit::TestFixture
        tar7z::Archive ar;
        tar7z::Reader reader;
        tar7z::Error error = reader.read("simple_ethalon.tar", ar);
-       ASSERT_TRUE(error == tar7z::T7ZE_OK);
+       ASSERT_TRUE(error == tar7z::Error::T7ZE_OK);
        ASSERT_TRUE(ar.count() == 1);
        char* buf = ar.file("nicesmallname.txt")->contents();
        std::string ethalon("this is a nice block content!");
@@ -55,7 +55,7 @@ struct ReaderTest : tpunit::TestFixture
        tar7z::Archive ar;
        tar7z::Reader reader;
        tar7z::Error error = reader.read("shortnames_ethalon.tar", ar);
-       ASSERT_TRUE(error == tar7z::T7ZE_OK);
+       ASSERT_TRUE(error == tar7z::Error::T7ZE_OK);
        ASSERT_TRUE(ar.count() == 4);
 
        {
@@ -86,7 +86,7 @@ struct ReaderTest : tpunit::TestFixture
        tar7z::Archive ar;
        tar7z::Reader reader;
        tar7z::Error error = reader.read("longnameinbeginning_ethalon.tar", ar);
-       ASSERT_TRUE(error == tar7z::T7ZE_OK);
+       ASSERT_TRUE(error == tar7z::Error::T7ZE_OK);
        ASSERT_TRUE(ar.count() == 3);
 
        {
@@ -113,7 +113,7 @@ struct ReaderTest : tpunit::TestFixture
        tar7z::Archive ar;
        tar7z::Reader reader;
        tar7z::Error error = reader.read("longnameincenter_ethalon.tar", ar);
-       ASSERT_TRUE(error == tar7z::T7ZE_OK);
+       ASSERT_TRUE(error == tar7z::Error::T7ZE_OK);
        ASSERT_TRUE(ar.count() == 4);
 
        {
@@ -147,7 +147,7 @@ struct ReaderTest : tpunit::TestFixture
        tar7z::Archive ar;
        tar7z::Reader reader;
        tar7z::Error error = reader.read("longnameinend_ethalon.tar", ar);
-       ASSERT_TRUE(error == tar7z::T7ZE_OK);
+       ASSERT_TRUE(error == tar7z::Error::T7ZE_OK);
        ASSERT_TRUE(ar.count() == 4);
 
        {
@@ -181,7 +181,7 @@ struct ReaderTest : tpunit::TestFixture
        tar7z::Archive ar;
        tar7z::Reader reader;
        tar7z::Error error = reader.read("7z.tar", ar);
-       ASSERT_TRUE(error == tar7z::T7ZE_OK);
+       ASSERT_TRUE(error == tar7z::Error::T7ZE_OK);
        ASSERT_TRUE(ar.count() == 4);
    }
 
@@ -190,7 +190,7 @@ struct ReaderTest : tpunit::TestFixture
        tar7z::Archive ar;
        tar7z::Reader reader;
        tar7z::Error error = reader.read("notexists.tar", ar);
-       ASSERT_TRUE(error == tar7z::T7ZE_CANNOT_OPEN_FILE);
+       ASSERT_TRUE(error == tar7z::Error::T7ZE_CANNOT_OPEN_FILE);
    }
 
    void test_invalid_file()
@@ -198,10 +198,10 @@ struct ReaderTest : tpunit::TestFixture
        tar7z::Archive ar;
        tar7z::Reader reader;
        tar7z::Error error = reader.read("invalid.tar", ar);
-       ASSERT_TRUE(error == tar7z::T7ZE_INVALID_CHECKSUM);
+       ASSERT_TRUE(error == tar7z::Error::T7ZE_INVALID_CHECKSUM);
 
        error = reader.read("tooempty.tar", ar);
-       ASSERT_TRUE(error == tar7z::T7ZE_NO_TRAILING_ZEROES);
+       ASSERT_TRUE(error == tar7z::Error::T7ZE_NO_TRAILING_ZEROES);
    }
 
 } reader_test;

@@ -6,7 +6,7 @@ tar7z::Error tar7z::Writer::write(const std::string& filename, const tar7z::Arch
     FILE* file = fopen(filename.c_str(), "wb");
     if (!file)
     {
-        return tar7z::T7ZE_CANNOT_OPEN_FILE;
+        return tar7z::Error::T7ZE_CANNOT_OPEN_FILE;
     }
     if (ar.Contents.size() != 0)
     {
@@ -14,7 +14,7 @@ tar7z::Error tar7z::Writer::write(const std::string& filename, const tar7z::Arch
         if (result != 1)
         {
             fclose(file);
-            return tar7z::T7ZE_CANNOT_WRITE_FILE;
+            return tar7z::Error::T7ZE_CANNOT_WRITE_FILE;
         }
     }
     std::vector<char> pad_bytes;
@@ -23,10 +23,10 @@ tar7z::Error tar7z::Writer::write(const std::string& filename, const tar7z::Arch
     if (result != 1)
     {
         fclose(file);
-        return tar7z::T7ZE_CANNOT_WRITE_FILE;
+        return tar7z::Error::T7ZE_CANNOT_WRITE_FILE;
     }
     fclose(file);
-    return tar7z::T7ZE_OK;
+    return tar7z::Error::T7ZE_OK;
 }
 
 tar7z::Writer::~Writer()

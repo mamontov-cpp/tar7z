@@ -31,7 +31,7 @@ struct WriterTest : tpunit::TestFixture
    {
       tar7z::Archive ar;
       tar7z::Writer writer;
-      ASSERT_TRUE(writer.write("empty.tar", ar) == tar7z::T7ZE_OK);
+      ASSERT_TRUE(writer.write("empty.tar", ar) == tar7z::Error::T7ZE_OK);
       ASSERT_TRUE(this->filesAreEqual("empty.tar", "empty_ethalon.tar"));
    }
 
@@ -43,7 +43,7 @@ struct WriterTest : tpunit::TestFixture
        ar.add("nicesmallname.txt", this->stringToUcharVector("this is a nice block content!"), true);
 
        tar7z::Writer writer;
-       ASSERT_TRUE(writer.write("simple.tar", ar) == tar7z::T7ZE_OK);
+       ASSERT_TRUE(writer.write("simple.tar", ar) == tar7z::Error::T7ZE_OK);
        ASSERT_TRUE(this->filesAreEqual("simple.tar", "simple_ethalon.tar"));
    }
 
@@ -57,7 +57,7 @@ struct WriterTest : tpunit::TestFixture
        ar.add("ignoreme2.txt", std::vector<char>(), true);
 
        tar7z::Writer writer;
-       ASSERT_TRUE(writer.write("shortnames.tar", ar) == tar7z::T7ZE_OK);
+       ASSERT_TRUE(writer.write("shortnames.tar", ar) == tar7z::Error::T7ZE_OK);
        ASSERT_TRUE(this->filesAreEqual("shortnames.tar", "shortnames_ethalon.tar"));
    }
 
@@ -72,7 +72,7 @@ struct WriterTest : tpunit::TestFixture
        ar.add("ignoreme2.txt", std::vector<char>(), true);
 
        tar7z::Writer writer;
-       ASSERT_TRUE(writer.write("ucharvector.tar", ar) == tar7z::T7ZE_OK);
+       ASSERT_TRUE(writer.write("ucharvector.tar", ar) == tar7z::Error::T7ZE_OK);
        ASSERT_TRUE(this->filesAreEqual("ucharvector.tar", "ucharvector_ethalon.tar"));
    }
 
@@ -84,7 +84,7 @@ struct WriterTest : tpunit::TestFixture
        ar.add("testfile1.txt", this->stringToUcharVector("very short content"), true);
 
        tar7z::Writer writer;
-       ASSERT_TRUE(writer.write("longnameinbeginning.tar", ar) == tar7z::T7ZE_OK);
+       ASSERT_TRUE(writer.write("longnameinbeginning.tar", ar) == tar7z::Error::T7ZE_OK);
        ASSERT_TRUE(this->filesAreEqual("longnameinbeginning.tar", "longnameinbeginning_ethalon.tar"));
    }
 
@@ -97,7 +97,7 @@ struct WriterTest : tpunit::TestFixture
        ar.add("testfile1.txt", this->stringToUcharVector("very short content"), true);
 
        tar7z::Writer writer;
-       ASSERT_TRUE(writer.write("longnameincenter.tar", ar) == tar7z::T7ZE_OK);
+       ASSERT_TRUE(writer.write("longnameincenter.tar", ar) == tar7z::Error::T7ZE_OK);
        ASSERT_TRUE(this->filesAreEqual("longnameincenter.tar", "longnameincenter_ethalon.tar"));
    }
 
@@ -110,7 +110,7 @@ struct WriterTest : tpunit::TestFixture
        ar.add("this is copy of file is intentionally longer than one hundred of characters because we need to test long names no part should be changed.txt", this->stringToUcharVector("this is content of second file with long name"), true);
 
        tar7z::Writer writer;
-       ASSERT_TRUE(writer.write("longnameinend.tar", ar) == tar7z::T7ZE_OK);
+       ASSERT_TRUE(writer.write("longnameinend.tar", ar) == tar7z::Error::T7ZE_OK);
        ASSERT_TRUE(this->filesAreEqual("longnameinend.tar", "longnameinend_ethalon.tar"));
    }
 

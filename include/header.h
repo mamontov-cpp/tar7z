@@ -59,7 +59,7 @@ namespace tar7z
 
 /*! We support only pure files in tar or 7-zip (or libtar) links, which always followed by the file
  */
-enum FileType
+enum class FileType: int
 {
     FT_File = '0',
     FT_7ZLink = 'L'

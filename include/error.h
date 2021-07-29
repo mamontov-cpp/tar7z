@@ -9,7 +9,7 @@ namespace tar7z
 
 /*! An errors linked to both reading and writing of archives
  */
-enum Error
+enum class Error: int
 {
     T7ZE_OK = 0,                     //!< No error
     T7ZE_CANNOT_OPEN_FILE  = 1,      //!< Cannot open file

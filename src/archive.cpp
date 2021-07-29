@@ -185,11 +185,11 @@ void tar7z::Archive::appendHeader(std::vector<char>& contents, const tar7z::Entr
     sprintf(offset + TAR7Z_SIZE_OFFSET, "%011llo", entry.Size);
     if (!link)
     {
-        offset[TAR7Z_TYPEFLAG_OFFSET] = static_cast<char>(tar7z::FT_File);
+        offset[TAR7Z_TYPEFLAG_OFFSET] = static_cast<char>(tar7z::FileType::FT_File);
     }
     else
     {
-        offset[TAR7Z_TYPEFLAG_OFFSET] = static_cast<char>(tar7z::FT_7ZLink);
+        offset[TAR7Z_TYPEFLAG_OFFSET] = static_cast<char>(tar7z::FileType::FT_7ZLink);
     }
 
     // Fill the checksum

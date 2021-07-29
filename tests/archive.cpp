@@ -49,7 +49,7 @@ struct ArchiveTest : tpunit::TestFixture
            ar.remove("testname2.txt");
 
            tar7z::Writer writer;
-           ASSERT_TRUE(writer.write("remove1.tar", ar) == tar7z::T7ZE_OK);
+           ASSERT_TRUE(writer.write("remove1.tar", ar) == tar7z::Error::T7ZE_OK);
            ASSERT_TRUE(this->filesAreEqual("remove1.tar", "remove1_ethalon.tar"));
        }
 
@@ -62,7 +62,7 @@ struct ArchiveTest : tpunit::TestFixture
            ar.remove("testname.txt");
 
            tar7z::Writer writer;
-           ASSERT_TRUE(writer.write("remove2.tar", ar) == tar7z::T7ZE_OK);
+           ASSERT_TRUE(writer.write("remove2.tar", ar) == tar7z::Error::T7ZE_OK);
            ASSERT_TRUE(this->filesAreEqual("remove2.tar", "remove2_ethalon.tar"));
        }
 
@@ -75,7 +75,7 @@ struct ArchiveTest : tpunit::TestFixture
            ar.remove("testname3.txt");
 
            tar7z::Writer writer;
-           ASSERT_TRUE(writer.write("remove3.tar", ar) == tar7z::T7ZE_OK);
+           ASSERT_TRUE(writer.write("remove3.tar", ar) == tar7z::Error::T7ZE_OK);
            ASSERT_TRUE(this->filesAreEqual("remove3.tar", "remove3_ethalon.tar"));
        }
 
@@ -89,7 +89,7 @@ struct ArchiveTest : tpunit::TestFixture
            ar.remove(longname);
 
            tar7z::Writer writer;
-           ASSERT_TRUE(writer.write("remove4.tar", ar) == tar7z::T7ZE_OK);
+           ASSERT_TRUE(writer.write("remove4.tar", ar) == tar7z::Error::T7ZE_OK);
            ASSERT_TRUE(this->filesAreEqual("remove4.tar", "remove4_ethalon.tar"));
        }
 
@@ -103,7 +103,7 @@ struct ArchiveTest : tpunit::TestFixture
            ar.remove(longname);
 
            tar7z::Writer writer;
-           ASSERT_TRUE(writer.write("remove5.tar", ar) == tar7z::T7ZE_OK);
+           ASSERT_TRUE(writer.write("remove5.tar", ar) == tar7z::Error::T7ZE_OK);
            ASSERT_TRUE(this->filesAreEqual("remove5.tar", "remove5_ethalon.tar"));
        }
 
@@ -117,7 +117,7 @@ struct ArchiveTest : tpunit::TestFixture
            ar.remove(longname);
 
            tar7z::Writer writer;
-           ASSERT_TRUE(writer.write("remove6.tar", ar) == tar7z::T7ZE_OK);
+           ASSERT_TRUE(writer.write("remove6.tar", ar) == tar7z::Error::T7ZE_OK);
            ASSERT_TRUE(this->filesAreEqual("remove6.tar", "remove6_ethalon.tar"));
        }
    }
@@ -133,7 +133,7 @@ struct ArchiveTest : tpunit::TestFixture
            ar.add("file.txt", this->stringToUcharVector(std::string(680, '.')), true);
 
            tar7z::Writer writer;
-           ASSERT_TRUE(writer.write("replace1.tar", ar) == tar7z::T7ZE_OK);
+           ASSERT_TRUE(writer.write("replace1.tar", ar) == tar7z::Error::T7ZE_OK);
            ASSERT_TRUE(this->filesAreEqual("replace1.tar", "replace1_ethalon.tar"));
        }
 
@@ -148,7 +148,7 @@ struct ArchiveTest : tpunit::TestFixture
            ar.add(longname, this->stringToUcharVector(std::string(680, '.')), true);
 
            tar7z::Writer writer;
-           ASSERT_TRUE(writer.write("replace2.tar", ar) == tar7z::T7ZE_OK);
+           ASSERT_TRUE(writer.write("replace2.tar", ar) == tar7z::Error::T7ZE_OK);
            ASSERT_TRUE(this->filesAreEqual("replace2.tar", "replace2_ethalon.tar"));
        }
    }
